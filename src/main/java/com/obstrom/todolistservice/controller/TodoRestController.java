@@ -60,7 +60,7 @@ public class TodoRestController {
         return ResponseEntity.ok().body(responseDto);
     }
 
-    @PatchMapping(path = "{userId}/{todoId/message}")
+    @PatchMapping(path = "{userId}/{todoId}/message")
     public ResponseEntity<TodoResponseDto> updateTodoMessage(
             @PathVariable @NotBlank String userId,
             @PathVariable @NotBlank String todoId,
@@ -70,7 +70,7 @@ public class TodoRestController {
         return ResponseEntity.ok().body(responseDto);
     }
 
-    @PatchMapping(path = "{userId}/{todoId/completed}")
+    @PatchMapping(path = "{userId}/{todoId}/completed")
     public ResponseEntity<TodoResponseDto> updateTodoCompleted(
             @PathVariable @NotBlank String userId,
             @PathVariable @NotBlank String todoId,
