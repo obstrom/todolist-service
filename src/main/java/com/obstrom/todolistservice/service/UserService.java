@@ -1,6 +1,7 @@
 package com.obstrom.todolistservice.service;
 
-import com.obstrom.todolistservice.dto.UserRequestDto;
+import com.obstrom.todolistservice.error.exception.EntityNotFoundException;
+import com.obstrom.todolistservice.error.exception.UniqueFieldConstraintException;
 import com.obstrom.todolistservice.model.User;
 import com.obstrom.todolistservice.repository.UserRepository;
 import com.obstrom.todolistservice.utility.AppUtility;
@@ -26,24 +27,22 @@ public class UserService {
     }
 
     public User findUserById(String userId) {
-        // TODO - Add custom exception and handler
         return userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException(String.format("No user with ID '%s' found", userId)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("No user with ID '%s' found", userId)));
     }
 
     public User findUserByUsername(String username) {
         // TODO - Add custom exception and handler
         return userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException(String.format("No user with username '%s' found", username)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("No user with username '%s' found", username)));
     }
 
     public User createNewUser(String username, String password) {
         // TODO - Add role with security
 
         // Validate new user
-        // TODO - Add custom exception and handler
         if (userRepository.findUserByUsername(username).isPresent())
-            throw new IllegalArgumentException(String.format("Username '%s' is already taken", username));
+            throw new UniqueFieldConstraintException(String.format("Username '%s' is already taken", username));
 
         // Build user
         User newUser = User.builder()
