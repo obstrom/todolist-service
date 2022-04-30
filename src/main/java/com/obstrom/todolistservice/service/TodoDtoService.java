@@ -60,7 +60,7 @@ public class TodoDtoService {
                 todo.getUserId(),
                 todo.getMessage(),
                 todo.getCompleted(),
-                todo.getCreatedAt()
+                todo.getCompletedAt()
         );
     }
 
