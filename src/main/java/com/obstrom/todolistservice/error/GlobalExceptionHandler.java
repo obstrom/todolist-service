@@ -2,6 +2,7 @@ package com.obstrom.todolistservice.error;
 
 import com.obstrom.todolistservice.error.exception.EntityNotFoundException;
 import com.obstrom.todolistservice.error.exception.UniqueFieldConstraintException;
+import io.lettuce.core.RedisConnectionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,6 +18,13 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResponseEntity<String> onSimpleCustomException(RuntimeException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    @ExceptionHandler(RedisConnectionException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public ResponseEntity<String> onRedisConnectionException() {
+        return ResponseEntity.internalServerError().body("Service response error - try again later or contact admin");
     }
 
 }
