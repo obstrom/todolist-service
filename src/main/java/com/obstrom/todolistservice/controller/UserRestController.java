@@ -2,9 +2,7 @@ package com.obstrom.todolistservice.controller;
 
 import com.obstrom.todolistservice.dto.UserRequestDto;
 import com.obstrom.todolistservice.dto.UserResponseDto;
-import com.obstrom.todolistservice.model.User;
 import com.obstrom.todolistservice.service.UserDtoService;
-import com.obstrom.todolistservice.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
