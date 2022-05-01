@@ -4,21 +4,27 @@
     <title th:text="'Todo - Login'" />
 </head>
 <body>
+    <nav th:insert="fragments/navbar.html" />
     <div class="container-sm">
         <form id="login-form" class="login-form" method="post" th:action="@{/login}">
-            <h2>Login</h2>
-            <p>
+            <h2 class="my-4">Login</h2>
+            <div th:unless="${param.error == null}" class="alert alert-danger" role="alert">
+                <span th:text="${param.error}"></span>
+            </div>
+            <p class="mb-2">
                 <label for="username"> Username</label>
-                <input th:value="${username}" type="text" id="username" name="username" class="form-control" placeholder="username" autofocus=""/>
+                <input th:value="${username}" type="text" id="username" name="username" class="form-control" placeholder="username" autofocus />
             </p>
-            <p>
+            <p class="mb-2">
                 <label for="password"> Password</label>
-                <input type="password" id="password" name="password" class="form-control" placeholder="password" autofocus=""/>
+                <input type="password" id="password" name="password" class="form-control" placeholder="password" />
             </p>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-            <a th:href="@{/}">
-                <button class="btn btn-lg btn-secondary btn-block" type="button">Cancel</button>
-            </a>
+            <div class="my-4">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+                <a th:href="@{/}">
+                    <button class="btn btn-lg btn-secondary btn-block" type="button">Cancel</button>
+                </a>
+            </div>
         </form>
     </div>
 </body>

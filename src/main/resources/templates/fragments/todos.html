@@ -1,0 +1,7 @@
+<div th:fragment="todosView(data)">
+    <ul>
+        <li th:each="todo: ${data}">
+            <span th:text="${todo.message}"></span><button>Complete</button>
+        </li>
+    </ul>
+</div>

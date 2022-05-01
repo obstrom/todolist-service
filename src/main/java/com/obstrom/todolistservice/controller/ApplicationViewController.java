@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -66,7 +63,20 @@ public class ApplicationViewController {
         }
 
         model.addAttribute("username", user.username());
-        return "login.html";
+        return "redirect:/login?register=true";
     }
 
+    @PostMapping("todo/new")
+    public String postNewTodo(
+            Authentication authentication,
+            Model model,
+            @RequestParam String todoMessage) {
+        System.out.println(todoMessage);
+        if (authentication != null && authentication.isAuthenticated()) {
+            User user = (User) authentication.getPrincipal();
+            todoDtoService.createTodo(user.getId(), todoMessage);
+        }
+
+        return "redirect:/";
+    }
 }

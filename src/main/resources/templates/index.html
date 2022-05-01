@@ -2,33 +2,33 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:insert="fragments/head.html :: head(_)" />
 <body>
+    <nav th:insert="fragments/navbar.html" />
     <div class="container-sm">
-        <h1>Todo Service</h1>
         <div sec:authorize="isAuthenticated()">
-            <h2>Welcome <span sec:authentication="name"></span>.</h2>
+            <h2>Welcome <span sec:authentication="name"></span></h2>
+
             <div sec:authorize="hasRole('ROLE_USER')">
-                <h3>Todos:</h3>
-                <ul>
-                    <li th:each="todo: ${todos}">
-                        <span th:text="${todo.message}"></span>
-                    </li>
-                </ul>
+                <div th:insert="fragments/add-todo.html :: addTodo" />
+                <div th:insert="fragments/todos.html :: todosView(data=${todos})" />
             </div>
+
             <div sec:authorize="hasRole('ROLE_ADMIN')">
                 <p>Admin stuff goes here...</p>
             </div>
-            <a th:href="@{/logout}">
-                <input type="button" class="btn btn-primary" value="Logout"/>
-            </a>
         </div>
-        <div sec:authorize="!isAuthenticated()">
-            <h2>You are not logged in.</h2>
-            <a th:href="@{/login}">
-                <input type="button" class="btn btn-primary" value="Login" />
-            </a>
-            <a th:href="@{/register}">
-                <input type="button" class="btn btn-primary" value="Register" />
-            </a>
+        <div sec:authorize="!isAuthenticated()" class="d-flex flex-column">
+            <h2 class="text-center my-5">Manage your tasks with <strong>Todoit</strong></h2>
+            <div class="m-4 p-4">
+                <h3 class="text-center my-4">Login or register to get started</h3>
+                <div class="d-flex flex-row justify-content-center">
+                    <a th:href="@{/login}" class="mx-2">
+                        <input type="button" class="btn btn-primary btn-lg" value="Login"/>
+                    </a>
+                    <a th:href="@{/register}" class="mx-2">
+                        <input type="button" class="btn btn-primary btn-lg" value="Register"/>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </body>
