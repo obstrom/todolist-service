@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html :: head(~{::title})">
+    <title th:text="'Todo - Register'" />
+</head><body>
+    <div class="container-sm">
+        <form id="register-form" class="login-form" method="post" action="/register">
+            <h2>Register</h2>
+            <div th:unless="${param.error == null}" class="alert alert-danger" role="alert">
+                <span th:text="${param.error}"></span>
+            </div>
+            <p>
+                <label for="username"> Username</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="username" autofocus=""/>
+            </p>
+            <p>
+                <label for="password"> Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="password" autofocus=""/>
+            </p>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+            <a th:href="@{/}">
+                <button class="btn btn-lg btn-secondary btn-block" type="button">Cancel</button>
+            </a>
+        </form>
+    </div>
+</body>
+</html>

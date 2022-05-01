@@ -1,5 +1,7 @@
 package com.obstrom.todolistservice.error;
 
+import com.obstrom.todolistservice.controller.TodoRestController;
+import com.obstrom.todolistservice.controller.UserRestController;
 import com.obstrom.todolistservice.error.exception.EntityNotFoundException;
 import com.obstrom.todolistservice.error.exception.UniqueFieldConstraintException;
 import io.lettuce.core.RedisConnectionException;
@@ -15,8 +17,8 @@ import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 
-@ControllerAdvice
-public class GlobalExceptionHandler {
+@ControllerAdvice(assignableTypes = {UserRestController.class, TodoRestController.class})
+public class RestControllerExceptionHandler {
 
     @ExceptionHandler({EntityNotFoundException.class, UniqueFieldConstraintException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)

@@ -33,13 +33,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
+                .antMatchers("/", "/login", "/register", "/css/**", "/js/**", "/images/**").permitAll()
+                .and()
+                .formLogin().loginPage("/login").defaultSuccessUrl("/", true)
+                .and()
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/")
+                .invalidateHttpSession(true).deleteCookies("JSESSIONID")
+                .and()
+                .authorizeRequests()
+                .antMatchers("/api/**").permitAll().anyRequest().authenticated()
                 .and()
                 .httpBasic();
-    }
+        }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
