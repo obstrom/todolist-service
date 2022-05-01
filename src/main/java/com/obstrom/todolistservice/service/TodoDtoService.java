@@ -15,12 +15,6 @@ public class TodoDtoService {
         this.todoService = todoService;
     }
 
-    public List<TodoResponseDto> findAllTodosInSystem() {
-        return todoService.findAllTodosInSystem().stream()
-                .map(this::mapTodoToResponseDto)
-                .toList();
-    }
-
     public List<TodoResponseDto> findAllTodosByUser(String userId) {
         return todoService.findAllTodosByUser(userId).stream()
                 .map(this::mapTodoToResponseDto)

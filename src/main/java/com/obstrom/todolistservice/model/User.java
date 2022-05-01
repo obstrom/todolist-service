@@ -26,7 +26,7 @@ public class User implements UserDetails, Serializable {
     @Getter Date createdAt;
     @Indexed String username;
     String password;
-    UserRole role;
+    @Getter UserRole role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

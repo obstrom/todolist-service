@@ -1,8 +1,11 @@
 package com.obstrom.todolistservice.controller;
 
 import com.obstrom.todolistservice.dto.TodoResponseDto;
+import com.obstrom.todolistservice.model.User;
 import com.obstrom.todolistservice.service.TodoDtoService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,69 +25,76 @@ public class TodoRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TodoResponseDto>> getAllTodos() {
-        List<TodoResponseDto> responseDtos = todoDtoService.findAllTodosInSystem();
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<List<TodoResponseDto>> getAllTodos(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        List<TodoResponseDto> responseDtos = todoDtoService.findAllTodosByUser(user.getId());
 
         return ResponseEntity.ok().body(responseDtos);
     }
 
-    @GetMapping(path = "{userId}")
-    public ResponseEntity<List<TodoResponseDto>> getAllTodosByUser(@PathVariable @NotBlank String userId) {
-        List<TodoResponseDto> responseDtos = todoDtoService.findAllTodosByUser(userId);
+    @GetMapping(path = "active")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<List<TodoResponseDto>> getAllActiveTodos(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        List<TodoResponseDto> responseDtos = todoDtoService.findAllActiveTodosByUser(user.getId());
 
         return ResponseEntity.ok().body(responseDtos);
     }
 
-    @GetMapping(path = "{userId}/active")
-    public ResponseEntity<List<TodoResponseDto>> getAllActiveTodosByUser(@PathVariable @NotBlank String userId) {
-        List<TodoResponseDto> responseDtos = todoDtoService.findAllActiveTodosByUser(userId);
-
-        return ResponseEntity.ok().body(responseDtos);
-    }
-
-    @GetMapping(path = "{userId}/{todoId}")
-    public ResponseEntity<TodoResponseDto> getTodoByIdAndUser(
-            @PathVariable @NotBlank String userId,
-            @PathVariable @NotBlank String todoId) {
-        TodoResponseDto responseDto = todoDtoService.findTodoById(userId, todoId);
+    @GetMapping(path = "id/{todoId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<TodoResponseDto> getTodoById(
+            @PathVariable @NotBlank String todoId,
+            Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        TodoResponseDto responseDto = todoDtoService.findTodoById(user.getId(), todoId);
 
         return ResponseEntity.ok().body(responseDto);
     }
 
-    @PostMapping(path = "{userId}")
+    @PostMapping
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<TodoResponseDto> createTodo(
-            @PathVariable @NotBlank String userId,
-            @RequestBody @NotBlank String message) {
-        TodoResponseDto responseDto = todoDtoService.createTodo(userId, message);
+            @RequestBody @NotBlank String message,
+            Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        TodoResponseDto responseDto = todoDtoService.createTodo(user.getId(), message);
 
         return ResponseEntity.ok().body(responseDto);
     }
 
-    @PatchMapping(path = "{userId}/{todoId}/message")
+    @PatchMapping(path = "{todoId}/message")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<TodoResponseDto> updateTodoMessage(
-            @PathVariable @NotBlank String userId,
             @PathVariable @NotBlank String todoId,
-            @RequestBody @NotBlank String message) {
-        TodoResponseDto responseDto = todoDtoService.updateTodoMessage(userId, todoId, message);
+            @RequestBody @NotBlank String message,
+            Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        TodoResponseDto responseDto = todoDtoService.updateTodoMessage(user.getId(), todoId, message);
 
         return ResponseEntity.ok().body(responseDto);
     }
 
-    @PatchMapping(path = "{userId}/{todoId}/completed")
+    @PatchMapping(path = "{todoId}/completed")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<TodoResponseDto> updateTodoCompleted(
-            @PathVariable @NotBlank String userId,
             @PathVariable @NotBlank String todoId,
-            @RequestBody @NotNull Boolean isCompleted) {
-        TodoResponseDto responseDto = todoDtoService.updateTodoCompletedStatus(userId, todoId, isCompleted);
+            @RequestBody @NotNull Boolean isCompleted,
+            Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        TodoResponseDto responseDto = todoDtoService.updateTodoCompletedStatus(user.getId(), todoId, isCompleted);
 
         return ResponseEntity.ok().body(responseDto);
     }
 
-    @DeleteMapping(path = "{userId}/{todoId}")
+    @DeleteMapping(path = "{todoId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public void deleteTodo(
-            @PathVariable @NotBlank String userId,
-            @PathVariable @NotBlank String todoId) {
-        todoDtoService.deleteTodo(userId, todoId);
+            @PathVariable @NotBlank String todoId,
+            Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        todoDtoService.deleteTodo(user.getId(), todoId);
     }
 
 }

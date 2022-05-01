@@ -20,11 +20,6 @@ public class TodoService {
         this.todoRepository = todoRepository;
     }
 
-    public List<Todo> findAllTodosInSystem() {
-        Iterable<Todo> iterable = todoRepository.findAll();
-        return AppUtility.convertIterableToList(iterable);
-    }
-
     public List<Todo> findAllTodosByUser(String userId) {
         Iterable<Todo> iterable = todoRepository.findAllByUserId(userId);
         return AppUtility.convertIterableToList(iterable);

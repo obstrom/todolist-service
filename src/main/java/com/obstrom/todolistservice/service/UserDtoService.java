@@ -38,6 +38,11 @@ public class UserDtoService {
         return mapUserToResponseDto(user);
     }
 
+    public UserResponseDto createNewAdminUser(UserRequestDto userDto) {
+        User user = userService.createNewAdminUser(userDto.username(), userDto.password());
+        return mapUserToResponseDto(user);
+    }
+
     public void deleteUser(String userId) {
         userService.deleteUser(userId);
     }
@@ -46,7 +51,8 @@ public class UserDtoService {
         return new UserResponseDto(
                 user.getId(),
                 user.getCreatedAt(),
-                user.getUsername()
+                user.getUsername(),
+                user.getRole()
         );
     }
 
