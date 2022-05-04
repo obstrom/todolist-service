@@ -16,9 +16,11 @@
             </div>
             <div sec:authorize="isAuthenticated()">
                 <span class="font-weight-bold" th:text="${#authentication.getPrincipal().getUsername()}"></span>
-                <a th:href="@{/logout}" class="no-link ms-2">
-                    <input type="button" class="btn btn-secondary" value="Logout" />
-                </a>
+                <form  th:action="@{/logout}" method="post" class="d-inline">
+                    <a class="no-link ms-2">
+                        <input type="submit" class="btn btn-secondary" value="Logout" />
+                    </a>
+                </form>
             </div>
         </div>
     </div>

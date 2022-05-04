@@ -31,7 +31,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/login", "/register", "/css/**", "/js/**", "/images/**").permitAll()
                 .and()
@@ -39,6 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/")
                 .invalidateHttpSession(true).deleteCookies("JSESSIONID")
+                .and()
+                .csrf().ignoringAntMatchers("/api/**")
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/**").permitAll().anyRequest().authenticated()
