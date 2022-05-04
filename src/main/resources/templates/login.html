@@ -5,7 +5,7 @@
 </head>
 <body>
     <nav th:insert="fragments/navbar.html" />
-    <div class="container-sm">
+    <div class="container form-container">
         <form id="login-form" class="login-form" method="post" th:action="@{/login}">
             <h2 class="my-4">Login</h2>
             <div th:unless="${param.error == null}" class="alert alert-danger" role="alert">
@@ -20,9 +20,9 @@
                 <input type="password" id="password" name="password" class="form-control" placeholder="password" />
             </p>
             <div class="my-4">
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-                <a th:href="@{/}">
-                    <button class="btn btn-lg btn-secondary btn-block" type="button">Cancel</button>
+                <button class="btn btn-primary btn-block" type="submit">Login</button>
+                <a class="mx-1" th:href="@{/}">
+                    <button class="btn btn-secondary btn-block" type="button">Cancel</button>
                 </a>
             </div>
         </form>

@@ -1,7 +1,10 @@
-<div th:fragment="addTodo">
-    <h3>Add new todo</h3>
-    <form class="d-flex flex-row" method="post" th:action="@{/todo/new}">
-        <input type="text" name="todoMessage" class="flex-grow-1" />
-        <button type="submit" class="btn btn-primary ms-4">Add</button>
-    <form/>
+<div th:fragment="addTodo" class="my-4">
+    <h3>Add task</h3>
+    <div th:unless="${param.error == null}" class="alert alert-danger" role="alert">
+        <span th:text="${param.error}"></span>
+    </div>
+    <form class="d-flex flex-row" th:method="post" th:action="@{/todo/new}">
+        <input type="text" name="todoMessage" class="flex-grow-1 px-2" required />
+        <button type="submit" class="btn btn-primary ms-2">Add</button>
+    </form>
 </div>

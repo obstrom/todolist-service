@@ -7,6 +7,7 @@ import com.obstrom.todolistservice.utility.AppUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +36,10 @@ public class TodoService {
 
     public List<Todo> findAllActiveTodosByUser(String userId) {
         return todoRepository.findAllByUserIdAndIsActive(userId);
+    }
+
+    public List<Todo> findAllCompletedTodosByUser(String userId) {
+        return todoRepository.findAllByUserIdAndIsCompleted(userId);
     }
 
     public Todo createTodo(String userId, String message) {

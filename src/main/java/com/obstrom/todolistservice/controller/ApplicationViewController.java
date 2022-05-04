@@ -2,8 +2,10 @@ package com.obstrom.todolistservice.controller;
 
 import com.obstrom.todolistservice.dto.TodoResponseDto;
 import com.obstrom.todolistservice.dto.UserRequestDto;
+import com.obstrom.todolistservice.dto.UserResponseDto;
 import com.obstrom.todolistservice.error.exception.UniqueFieldConstraintException;
 import com.obstrom.todolistservice.model.User;
+import com.obstrom.todolistservice.security.UserRole;
 import com.obstrom.todolistservice.service.TodoDtoService;
 import com.obstrom.todolistservice.service.UserDtoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +33,20 @@ public class ApplicationViewController {
     public String getIndexPage(Authentication authentication, Model model) {
         if (authentication != null && authentication.isAuthenticated()) {
             User user = (User) authentication.getPrincipal();
-            List<TodoResponseDto> todosByUser = todoDtoService.findAllTodosByUser(user.getId());
-            model.addAttribute("todos", todosByUser);
+
+            if (user.getRole() == UserRole.ROLE_ADMIN) {
+                List<UserResponseDto> users = userDtoService.findAllUsers();
+
+                model.addAttribute("users", users);
+            }
+
+            if (user.getRole() == UserRole.ROLE_USER) {
+                List<TodoResponseDto> activeTodosByUser = todoDtoService.findAllActiveTodosByUserSortedByCreationDate(user.getId());
+                List<TodoResponseDto> completedTodosByUser = todoDtoService.findAllCompletedTodosByUserSortedByCompletionDate(user.getId());
+
+                model.addAttribute("todosActive", activeTodosByUser);
+                model.addAttribute("todosCompleted", completedTodosByUser);
+            }
         }
 
         return "index.html";
@@ -69,12 +83,58 @@ public class ApplicationViewController {
     @PostMapping("todo/new")
     public String postNewTodo(
             Authentication authentication,
-            Model model,
             @RequestParam String todoMessage) {
-        System.out.println(todoMessage);
         if (authentication != null && authentication.isAuthenticated()) {
+            if (todoMessage.isBlank())
+                return "redirect:/?error=+Task+cant+be+empty!";
+
             User user = (User) authentication.getPrincipal();
             todoDtoService.createTodo(user.getId(), todoMessage);
+        }
+
+        return "redirect:/";
+    }
+
+    @PostMapping("todo/complete/{todoId}")
+    public String completeTodo(
+            Authentication authentication,
+            @PathVariable String todoId) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            if (todoId.isBlank())
+                return "redirect:/?error=+Todo+ID+is+missing!";
+
+            User user = (User) authentication.getPrincipal();
+            todoDtoService.updateTodoCompletedStatus(user.getId(), todoId, true);
+        }
+
+        return "redirect:/";
+    }
+
+    @PostMapping("todo/reactivate/{todoId}")
+    public String reactivateTodo(
+            Authentication authentication,
+            @PathVariable String todoId) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            if (todoId.isBlank())
+                return "redirect:/?error=+Todo+ID+is+missing!";
+
+            User user = (User) authentication.getPrincipal();
+            todoDtoService.updateTodoCompletedStatus(user.getId(), todoId, false);
+        }
+
+        return "redirect:/";
+    }
+
+    @PostMapping("todo/delete/{todoId}")
+    public String deleteTodo(
+            Authentication authentication,
+            @PathVariable String todoId) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            if (todoId.isBlank())
+                return "redirect:/?error=+Todo+ID+is+missing!";
+
+            User user = (User) authentication.getPrincipal();
+            todoDtoService.deleteTodo(user.getId(), todoId);
         }
 
         return "redirect:/";

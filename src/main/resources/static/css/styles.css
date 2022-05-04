@@ -1,14 +1,58 @@
 body {
     font-family: 'Work Sans', sans-serif;
-    background: #f5f5f5;
+    background: #f7f7f7;
     color: rgba(0, 0, 0, 0.85);
 }
 
+a.no-link, a.no-link:hover, a.no-link:active {
+    color: rgba(0, 0, 0, 0.85);
+    text-decoration: none;
+}
+
+.btn-bold, .font-weight-bold {
+    font-weight: 600;
+}
+
 .navbar {
+    background: #dbdbdb;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
 }
 
 .navbar-brand h1 {
     font-weight: 700;
-    color: rgba(0, 0, 0, 0.75);
+}
+
+.start-container {
+    background: #ededed;
+    border-radius: 1em;
+}
+
+.main-container {
+    max-width: 720px;
+}
+
+.form-container {
+    max-width: 540px;
+}
+
+.todos-container .todo-list {
+    list-style-type: none;
+}
+
+.todos-container .todo-list .todo-pointer-box, .todo-completed-checkbox {
+    cursor: pointer;
+}
+
+.todos-container .todo-list .todo-completed-checkbox {
+    width: 22px;
+    height: 22px;
+}
+
+.todo-completed-container .collapse-toggle-text {
+    font-size: 75%;
+}
+
+.todo-completed .todo-pointer-box {
+    color: #a6a6a6;
+    text-decoration: line-through;
 }

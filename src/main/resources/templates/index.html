@@ -3,24 +3,26 @@
 <head th:insert="fragments/head.html :: head(_)" />
 <body>
     <nav th:insert="fragments/navbar.html" />
-    <div class="container-sm">
+    <div class="container main-container">
         <div sec:authorize="isAuthenticated()">
-            <h2>Welcome <span sec:authentication="name"></span></h2>
+            <h2 class="welcome-message display-4 text-center">Welcome <span sec:authentication="name"></span></h2>
 
-            <div sec:authorize="hasRole('ROLE_USER')">
+            <div sec:authorize="hasRole('ROLE_USER')" class="pt-4">
                 <div th:insert="fragments/add-todo.html :: addTodo" />
-                <div th:insert="fragments/todos.html :: todosView(data=${todos})" />
+                <div th:insert="fragments/todos.html :: todosView(data=${todosActive})" />
+                <div th:insert="fragments/todos-completed.html :: todosCompletedView(data=${todosCompleted})" />
+                <script type="text/javascript" th:src="@{/js/todo.js}"></script>
             </div>
 
-            <div sec:authorize="hasRole('ROLE_ADMIN')">
-                <p>Admin stuff goes here...</p>
+            <div sec:authorize="hasRole('ROLE_ADMIN')" class="pt-4">
+                <div th:insert="fragments/admin-view.html :: adminView(users=${users})"></div>
             </div>
         </div>
         <div sec:authorize="!isAuthenticated()" class="d-flex flex-column">
             <h2 class="text-center my-5">Manage your tasks with <strong>Todoit</strong></h2>
-            <div class="m-4 p-4">
+            <div class="start-container m-4 p-4">
                 <h3 class="text-center my-4">Login or register to get started</h3>
-                <div class="d-flex flex-row justify-content-center">
+                <div class="m-4 d-flex flex-row justify-content-center">
                     <a th:href="@{/login}" class="mx-2">
                         <input type="button" class="btn btn-primary btn-lg" value="Login"/>
                     </a>

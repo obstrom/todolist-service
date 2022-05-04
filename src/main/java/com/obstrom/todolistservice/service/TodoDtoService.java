@@ -4,6 +4,7 @@ import com.obstrom.todolistservice.dto.TodoResponseDto;
 import com.obstrom.todolistservice.model.Todo;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -25,8 +26,16 @@ public class TodoDtoService {
         return mapTodoToResponseDto(todoService.findTodoById(userId, todoId));
     }
 
-    public List<TodoResponseDto> findAllActiveTodosByUser(String userId) {
+    public List<TodoResponseDto> findAllActiveTodosByUserSortedByCreationDate(String userId) {
         return todoService.findAllActiveTodosByUser(userId).stream()
+                .sorted(Comparator.comparing(Todo::getCreatedAt))
+                .map(this::mapTodoToResponseDto)
+                .toList();
+    }
+
+    public List<TodoResponseDto> findAllCompletedTodosByUserSortedByCompletionDate(String userId) {
+        return todoService.findAllCompletedTodosByUser(userId).stream()
+                .sorted(Comparator.comparing(Todo::getCompletedAt).reversed())
                 .map(this::mapTodoToResponseDto)
                 .toList();
     }

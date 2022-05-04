@@ -1,0 +1,21 @@
+<div th:fragment="adminView(users)" class="my-4">
+    <h3>Users</h3>
+    <table class="table table-hover users-table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Username</th>
+                <th scope="col">Role</th>
+                <th scope="col">Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user: ${users}" class="user-row">
+                <th scope="row" th:text="${user.id}"></th>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.userRole}"></td>
+                <td th:text="${user.createdAt}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -37,7 +37,16 @@ public class TodoRestController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<List<TodoResponseDto>> getAllActiveTodos(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        List<TodoResponseDto> responseDtos = todoDtoService.findAllActiveTodosByUser(user.getId());
+        List<TodoResponseDto> responseDtos = todoDtoService.findAllActiveTodosByUserSortedByCreationDate(user.getId());
+
+        return ResponseEntity.ok().body(responseDtos);
+    }
+
+    @GetMapping(path = "completed")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<List<TodoResponseDto>> getAllCompletedTodos(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        List<TodoResponseDto> responseDtos = todoDtoService.findAllCompletedTodosByUserSortedByCompletionDate(user.getId());
 
         return ResponseEntity.ok().body(responseDtos);
     }

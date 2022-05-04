@@ -9,4 +9,5 @@ import java.util.List;
 public interface TodoRepositoryCustom {
     List<Todo> findAllByUserId(String userId);
     List<Todo> findAllByUserIdAndIsActive(String userId);
+    List<Todo> findAllByUserIdAndIsCompleted(String userId);
 }

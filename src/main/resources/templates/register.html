@@ -5,7 +5,7 @@
 </head>
 <body>
     <nav th:insert="fragments/navbar.html" />
-    <div class="container-sm">
+    <div class="container form-container">
         <form id="register-form" class="login-form" method="post" action="/register">
             <h2 class="my-4">Register</h2>
             <div th:unless="${param.error == null}" class="alert alert-danger" role="alert">

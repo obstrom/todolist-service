@@ -62,4 +62,11 @@ public class TodoRepositoryImpl implements TodoRepositoryCustom {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<Todo> findAllByUserIdAndIsCompleted(String userId) {
+        return findAllByUserId(userId).stream()
+                .filter(todo -> todo.getCompleted() != null && todo.getCompleted())
+                .collect(Collectors.toList());
+    }
+
 }

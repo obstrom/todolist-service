@@ -1,0 +1,20 @@
+<div th:fragment="todosCompletedView(data)" class="todo-completed-container py-3">
+    <a
+            class="d-flex align-items-center no-link"
+            id="complete-todos-collapse-link"
+            data-bs-toggle="collapse"
+            href="#collapse-completed-todos"
+            aria-expanded="false"
+            aria-controls="collapseExample"
+    >
+        <h3 class="m-0">
+            <span class="iconify" id="collapse-icon-hide" data-icon="fa6-solid:caret-up"></span>
+            <span class="iconify d-none" id="collapse-icon-show" data-icon="fa6-solid:caret-down"></span>
+            Completed tasks
+            <span class="collapse-toggle-text"> (Click to <span id="collapse-toggle-text-show">show</span>)</span>
+        </h3>
+    </a>
+    <div class="collapse" id="collapse-completed-todos">
+        <div th:insert="fragments/todos.html :: todosView(data=${data})" />
+    </div>
+</div>
